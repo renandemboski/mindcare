@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { useAuth } from '../../../context/AuthContext';
@@ -26,7 +26,10 @@ const SignIn = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <View style={styles.card}>
         <Text style={styles.title}>Login</Text>
         <Input
@@ -49,7 +52,7 @@ const SignIn = ({ navigation }) => {
           <Text style={styles.link}>Ver profissionais</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -67,11 +70,17 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor: COLORS.CARD_BACKGROUND,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   title: {
     fontSize: 24,

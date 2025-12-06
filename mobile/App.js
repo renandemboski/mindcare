@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { AuthProvider } from './src/context/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -10,7 +10,10 @@ export default function App() {
       <AuthProvider>
         <View style={styles.container}>
           <AppNavigator />
-          <StatusBar style="auto" />
+          <StatusBar
+            style={Platform.OS === 'ios' ? 'light' : 'light'}
+            backgroundColor="#1A1B26"
+          />
         </View>
       </AuthProvider>
     </SafeAreaProvider>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { useAuth } from '../../../context/AuthContext';
@@ -35,41 +35,46 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.title}>Cadastro</Text>
-        <Input
-          placeholder="Nome completo"
-          value={nome}
-          onChangeText={setNome}
-        />
-        <Input
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <Input
-          placeholder="Senha"
-          value={senha}
-          onChangeText={setSenha}
-          secureTextEntry
-        />
-        <Input
-          placeholder="Confirmar senha"
-          value={confirmarSenha}
-          onChangeText={setConfirmarSenha}
-          secureTextEntry
-        />
-        <Button title="Cadastrar" onPress={handleRegister} fullWidth />
-        <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-          <Text style={styles.link}>Já tem conta? Faça login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Main')}>
-          <Text style={styles.link}>Ver profissionais</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.card}>
+          <Text style={styles.title}>Cadastro</Text>
+          <Input
+            placeholder="Nome completo"
+            value={nome}
+            onChangeText={setNome}
+          />
+          <Input
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          <Input
+            placeholder="Senha"
+            value={senha}
+            onChangeText={setSenha}
+            secureTextEntry
+          />
+          <Input
+            placeholder="Confirmar senha"
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
+            secureTextEntry
+          />
+          <Button title="Cadastrar" onPress={handleRegister} fullWidth />
+          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+            <Text style={styles.link}>Já tem conta? Faça login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Main')}>
+            <Text style={styles.link}>Ver profissionais</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -87,11 +92,17 @@ const styles = StyleSheet.create({
     padding: 40,
     backgroundColor: COLORS.CARD_BACKGROUND,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   title: {
     fontSize: 24,
